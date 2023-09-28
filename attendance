@@ -1,0 +1,26 @@
+from flask import Flask, render_template, request, jsonify
+
+app = Flask(__name__)
+
+attendance_list = []
+
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+@app.route('/scan_attendance', methods=['POST'])
+def scan_attendance():
+    student_name = request.form['student_name']
+    attendance_entry = {
+        'name': student_name,
+        'timestamp': 'some timestamp here'  # Replace with actual timestamp logic
+    }
+    attendance_list.append(attendance_entry)
+    return jsonify({'message': 'Attendance recorded successfully.'})
+
+@app.route('/get_attendance', methods=['GET'])
+def get_attendance():
+    return jsonify({'attendance': attendance_list})
+
+if __name__ == '__main__':
+    app.run(debug=True)
